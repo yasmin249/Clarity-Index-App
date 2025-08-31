@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clarity Index App</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-search"></i> Clarity Index App</h1>
+            <p>Analyze your text for readability and clarity</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Input Section -->
+            <section class="input-section">
+                <div class="form-group">
+                    <label for="textInput">Paste your text here:</label>
+                    <textarea 
+                        id="textInput" 
+                        placeholder="Enter the text you want to analyze for clarity and readability..."
+                        rows="8"
+                    ></textarea>
+                    <div class="char-counter">
+                        <span id="charCount">0</span> characters
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="methodSelect">Choose Analysis Method:</label>
+                    <select id="methodSelect">
+                        <option value="clarity_index">Clarity Index (Target: 20-40)</option>
+                        <option value="gunning_fog">Gunning Fog Index (Target: <12)</option>
+                        <option value="infogineering_index">Infogineering Index (Target: 15-25)</option>
+                        <option value="flesch_reading_ease">Flesch Reading Ease (Higher = Easier)</option>
+                        <option value="flesch_kincaid_grade">Flesch-Kincaid Grade Level</option>
+                    </select>
+                </div>
+
+                <button id="analyzeBtn" class="analyze-btn">
+                    <i class="fas fa-chart-line"></i>
+                    Check Clarity
+                </button>
+            </section>
+
+            <!-- Loading Section -->
+            <section id="loadingSection" class="loading-section hidden">
+                <div class="loader-container">
+                    <div class="spinner">
+                        <i class="fas fa-pen-nib"></i>
+                    </div>
+                    <h3>Analyzing your text...</h3>
+                    <div class="writing-tip">
+                        <p id="rotatingTip">Short words often say more than long ones.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="resultsSection" class="results-section hidden">
+                <div class="results-header">
+                    <h2><i class="fas fa-chart-bar"></i> Analysis Results</h2>
+                    <button id="newAnalysisBtn" class="new-analysis-btn">
+                        <i class="fas fa-plus"></i> New Analysis
+                    </button>
+                </div>
+
+                <!-- Selected Metric Card -->
+                <div class="metric-card primary-metric">
+                    <div class="metric-header">
+                        <h3 id="selectedMetricName">Clarity Index</h3>
+                        <div class="metric-score" id="selectedMetricScore">0</div>
+                    </div>
+                    <div class="metric-interpretation" id="selectedMetricInterpretation">
+                        Target range: 20-40 (≈30 ideal)
+                    </div>
+                </div>
+
+                <!-- AI Feedback -->
+                <div class="ai-feedback-card">
+                    <h3><i class="fas fa-robot"></i> AI Writing Coach</h3>
+                    <div class="conclusion" id="aiConclusion">
+                        <!-- AI conclusion will be inserted here -->
+                    </div>
+                    <div class="suggestions">
+                        <h4>Suggestions:</h4>
+                        <ul id="aiSuggestions">
+                            <!-- AI suggestions will be inserted here -->
+                        </ul>
+                    </div>
+                    <div id="exampleRewrite" class="example-rewrite hidden">
+                        <h4>Example Rewrite:</h4>
+                        <p id="rewriteText"></p>
+                    </div>
+                    <div class="confidence">
+                        Confidence: <span id="confidenceLevel">Medium</span>
+                    </div>
+                </div>
+
+                <!-- Detailed Metrics -->
+                <div class="detailed-metrics">
+                    <h3><i class="fas fa-list"></i> Detailed Metrics</h3>
+                    <div class="metrics-grid">
+                        <div class="metric-item">
+                            <span class="metric-label">Words:</span>
+                            <span id="wordCount">0</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Sentences:</span>
+                            <span id="sentenceCount">0</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Paragraphs:</span>
+                            <span id="paragraphCount">0</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Avg Sentence Length:</span>
+                            <span id="aslMetric">0</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Complex Words (%):</span>
+                            <span id="pcwMetric">0</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Sentences per Paragraph:</span>
+                            <span id="asppMetric">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- All Indices -->
+                <div class="all-indices">
+                    <h3><i class="fas fa-calculator"></i> All Readability Indices</h3>
+                    <div class="indices-grid">
+                        <div class="index-item">
+                            <span class="index-name">Clarity Index:</span>
+                            <span id="clarityIndexValue">0</span>
+                        </div>
+                        <div class="index-item">
+                            <span class="index-name">Gunning Fog:</span>
+                            <span id="gunningFogValue">0</span>
+                        </div>
+                        <div class="index-item">
+                            <span class="index-name">Infogineering:</span>
+                            <span id="infoengineeringValue">0</span>
+                        </div>
+                        <div class="index-item">
+                            <span class="index-name">Flesch Reading Ease:</span>
+                            <span id="fleschEaseValue">0</span>
+                        </div>
+                        <div class="index-item">
+                            <span class="index-name">Flesch-Kincaid Grade:</span>
+                            <span id="fleschGradeValue">0</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Error Section -->
+            <section id="errorSection" class="error-section hidden">
+                <div class="error-card">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Analysis Error</h3>
+                    <p id="errorMessage">Something went wrong. Please try again.</p>
+                    <button id="retryBtn" class="retry-btn">Try Again</button>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>© 2025 Clarity Index App - Helping you write clearer content</p>
+        </footer>
+    </div>
+
+    <!-- <script src="{{ url_for('static', filename='script.js') }}"></script> -->
+</body>
+</html>
